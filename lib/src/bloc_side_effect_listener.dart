@@ -1,11 +1,11 @@
-library side_effect_bloc;
+library bloc_side_effect;
 
 import 'dart:async';
 
+import 'package:bloc_side_effect/src/side_effect_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:side_effect_bloc/src/side_effect_provider.dart';
 
 /// Mixin which allows `MultiBlocSideEffectListener` to infer the types
 /// of multiple [BlocWidgetSideEffectListener]s.
@@ -13,9 +13,9 @@ mixin BlocSideEffectListenerSingleChildWidget on SingleChildWidget {}
 
 /// Signature for the `listener` function which takes the `BuildContext` along
 /// with the `side effect`.
-typedef BlocWidgetSideEffectListener<C> = void Function(
+typedef BlocWidgetSideEffectListener<SE> = void Function(
   BuildContext context,
-  C sideEffect,
+  SE sideEffect,
 );
 
 /// {@template bloc_side_effect_listener}
@@ -50,15 +50,15 @@ typedef BlocWidgetSideEffectListener<C> = void Function(
 /// )
 /// ```
 /// {@endtemplate}
-class BlocSideEffectListener<B extends SideEffectProvider<C>, C>
-    extends BlocSideEffectListenerBase<B, C>
+class BlocSideEffectListener<B extends SideEffectProvider<SE>, SE>
+    extends BlocSideEffectListenerBase<B, SE>
     with BlocSideEffectListenerSingleChildWidget {
   /// {@macro bloc_side_effect_listener}
   const BlocSideEffectListener({
-    Key? key,
-    required BlocWidgetSideEffectListener<C> listener,
+    required BlocWidgetSideEffectListener<SE> listener,
     B? bloc,
     Widget? child,
+    Key? key,
   }) : super(
           key: key,
           child: child,
@@ -74,14 +74,14 @@ class BlocSideEffectListener<B extends SideEffectProvider<C>, C>
 /// subscription. The type of the side effect and what happens with each
 /// side effect emit is defined by sub-classes.
 /// {@endtemplate}
-abstract class BlocSideEffectListenerBase<B extends SideEffectProvider<C>, C>
+abstract class BlocSideEffectListenerBase<B extends SideEffectProvider<SE>, SE>
     extends SingleChildStatefulWidget {
   /// {@macro bloc_listener_base}
   const BlocSideEffectListenerBase({
-    Key? key,
     required this.listener,
     this.bloc,
     this.child,
+    Key? key,
   }) : super(key: key, child: child);
 
   /// The widget which will be rendered as a descendant of the
@@ -95,16 +95,16 @@ abstract class BlocSideEffectListenerBase<B extends SideEffectProvider<C>, C>
   /// The [BlocWidgetListener] which will be called on every `side effect` emit.
   /// This [listener] should be used for any code which needs to execute
   /// in response to a `side effect` emit.
-  final BlocWidgetSideEffectListener<C> listener;
+  final BlocWidgetSideEffectListener<SE> listener;
 
   @override
-  SingleChildState<BlocSideEffectListenerBase<B, C>> createState() =>
-      _BlocSideEffectListenerBaseState<B, C>();
+  SingleChildState<BlocSideEffectListenerBase<B, SE>> createState() =>
+      _BlocSideEffectListenerBaseState<B, SE>();
 }
 
-class _BlocSideEffectListenerBaseState<B extends SideEffectProvider<C>, C>
-    extends SingleChildState<BlocSideEffectListenerBase<B, C>> {
-  StreamSubscription<C>? _subscription;
+class _BlocSideEffectListenerBaseState<B extends SideEffectProvider<SE>, SE>
+    extends SingleChildState<BlocSideEffectListenerBase<B, SE>> {
+  StreamSubscription<SE>? _subscription;
   late B _bloc;
 
   @override
@@ -115,7 +115,7 @@ class _BlocSideEffectListenerBaseState<B extends SideEffectProvider<C>, C>
   }
 
   @override
-  void didUpdateWidget(BlocSideEffectListenerBase<B, C> oldWidget) {
+  void didUpdateWidget(BlocSideEffectListenerBase<B, SE> oldWidget) {
     super.didUpdateWidget(oldWidget);
     final oldBloc = oldWidget.bloc ?? context.read<B>();
     final currentBloc = widget.bloc ?? oldBloc;
@@ -162,9 +162,8 @@ class _BlocSideEffectListenerBaseState<B extends SideEffectProvider<C>, C>
   }
 
   void _subscribe() {
-    _subscription = _bloc.sideEffects.listen((command) {
-      widget.listener(context, command);
-    });
+    _subscription = _bloc.sideEffects
+        .listen((sideEffect) => widget.listener(context, sideEffect));
   }
 
   void _unsubscribe() {

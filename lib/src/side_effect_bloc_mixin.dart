@@ -1,21 +1,21 @@
-library side_effect_bloc;
+library bloc_side_effect;
 
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_side_effect/src/side_effect_provider.dart';
 import 'package:flutter/widgets.dart';
-import 'package:side_effect_bloc/src/side_effect_provider.dart';
 
-/// {@template side_effect_bloc_mixin}
+/// {@template bloc_side_effect_mixin}
 /// Mixin to enrich the existing bloc  with `Stream` of `Side effects`
 /// {@endtemplate}
-mixin SideEffectBlocMixin<EVENT, STATE, SIDE_EFFECT> on Bloc<EVENT, STATE>
-    implements SideEffectProvider<SIDE_EFFECT> {
-  final StreamController<SIDE_EFFECT> _sideEffectController =
+mixin BlocSideEffectMixin<E, S, SE> on Bloc<E, S>
+    implements SideEffectProvider<SE> {
+  final StreamController<SE> _sideEffectController =
       StreamController.broadcast();
 
   /// Emits a new [sideEffect].
-  void produceSideEffect(SIDE_EFFECT sideEffect) {
+  void emitSideEffect(SE sideEffect) {
     try {
       if (_sideEffectController.isClosed) {
         throw StateError('Cannot emit new states after calling close');
@@ -28,13 +28,13 @@ mixin SideEffectBlocMixin<EVENT, STATE, SIDE_EFFECT> on Bloc<EVENT, STATE>
   }
 
   @override
-  Stream<SIDE_EFFECT> get sideEffects => _sideEffectController.stream;
+  Stream<SE> get sideEffects => _sideEffectController.stream;
 
   @mustCallSuper
   @override
   Future<void> close() async {
-    await super.close();
     await _sideEffectController.close();
+    await super.close();
   }
 
   @override

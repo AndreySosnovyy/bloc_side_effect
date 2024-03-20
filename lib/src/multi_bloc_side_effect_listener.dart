@@ -1,8 +1,8 @@
-library side_effect_bloc;
+library bloc_side_effect;
 
+import 'package:bloc_side_effect/src/bloc_side_effect_listener.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:side_effect_bloc/src/bloc_side_effect_listener.dart';
 
 /// {@template multi_bloc_listener}
 /// Merges multiple [BlocSideEffectListener] widgets into one widget tree.

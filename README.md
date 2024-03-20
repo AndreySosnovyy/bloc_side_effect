@@ -1,4 +1,4 @@
-<a href="https://pub.dev/packages/side_effect_bloc"><img src="https://img.shields.io/pub/v/side_effect_bloc.svg" alt="Pub"></a>
+<a href="https://pub.dev/packages/bloc_side_effect"><img src="https://img.shields.io/pub/v/bloc_side_effect.svg" alt="Pub"></a>
 
 
 Extended [bloc](https://pub.dev/packages/bloc) with a separate stream for events that should be consumed only once. 
@@ -7,21 +7,11 @@ A separate thread allows you to separate events related to navigation a toast/sn
 
 ## Usage
 
-### Declare bloc
-
-#### Adding mixin to existing bloc 
+### Adding mixin
 
 ```dart
 class FeatureBloc extends Bloc<FeatureEvent, FeatureState>
     with SideEffectBlocMixin<FeatureEvent, FeatureState, FeatureSideEffect> {
-  FeatureBloc() : super(FeatureState.initial());
-}
-```
-
-#### Inherit from bloc 
-
-```dart
-class FeatureBloc extends SideEffectBloc<FeatureEvent, FeatureState, FeatureSideEffect>{
   FeatureBloc() : super(FeatureState.initial());
 }
 ```
@@ -33,7 +23,7 @@ class FeatureBloc extends SideEffectBloc<FeatureEvent, FeatureState, FeatureSide
   FeatureBloc() : super(FeatureState.initial()){        
     on<ItemClick>(
       (event, emit) {
-        produceSideEffect(FeatureSideEffect.openItem(event.id));
+        emitSideEffect(FeatureSideEffect.openItem(event.id));
       },
     );
   }
@@ -43,7 +33,6 @@ class FeatureBloc extends SideEffectBloc<FeatureEvent, FeatureState, FeatureSide
 ### Listen side effect
 
 ```dart
-// feature_view.dart
 BlocSideEffectListener<FeatureBloc, FeatureSideEffect>(
     listener: (BuildContext context, FeatureSideEffect sideEffect) {
         sideEffect.when(
@@ -55,6 +44,6 @@ BlocSideEffectListener<FeatureBloc, FeatureSideEffect>(
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
             });
     },
-    child: ...
+    child: ViewBody(),
 )
 ```
