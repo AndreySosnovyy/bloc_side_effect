@@ -1,27 +1,26 @@
-name: example
-description: Bloc side effect example
-
-publish_to: 'none' 
-
+name: bloc_tests
+description: "A new Flutter project."
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.16.2 <3.0.0"
+  sdk: '>=3.3.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-
-  bloc: ^8.0.0
-  flutter_bloc: ^8.0.0
-  freezed_annotation: ^2.4.1
+  cupertino_icons: ^1.0.6
+  top_snackbar_flutter: ^3.1.0
+  flutter_bloc: ^8.1.4
   bloc_side_effect:
     path: ../
+  freezed_annotation: ^2.4.1
 
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  build_runner: ^2.4.8
   freezed: ^2.4.7
-  flutter_lints: ^1.0.0
-  build_runner: ^2.1.8
-
 flutter:
   uses-material-design: true

@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart';
 /// Mixin to enrich the existing bloc  with `Stream` of `Side effects`
 /// {@endtemplate}
 mixin BlocSideEffectMixin<E, S, SE> on Bloc<E, S>
-    implements SideEffectProvider<SE> {
+    implements SideEffectProvider<SE, S> {
   final StreamController<SE> _sideEffectController =
       StreamController.broadcast();
 

@@ -50,8 +50,8 @@ typedef BlocWidgetSideEffectListener<SE> = void Function(
 /// )
 /// ```
 /// {@endtemplate}
-class BlocSideEffectListener<B extends SideEffectProvider<SE>, SE>
-    extends BlocSideEffectListenerBase<B, SE>
+class BlocSideEffectListener<B extends SideEffectProvider<SE, S>, S, SE>
+    extends BlocSideEffectListenerBase<B, S, SE>
     with BlocSideEffectListenerSingleChildWidget {
   /// {@macro bloc_side_effect_listener}
   const BlocSideEffectListener({
@@ -74,8 +74,8 @@ class BlocSideEffectListener<B extends SideEffectProvider<SE>, SE>
 /// subscription. The type of the side effect and what happens with each
 /// side effect emit is defined by sub-classes.
 /// {@endtemplate}
-abstract class BlocSideEffectListenerBase<B extends SideEffectProvider<SE>, SE>
-    extends SingleChildStatefulWidget {
+abstract class BlocSideEffectListenerBase<B extends SideEffectProvider<SE, S>,
+    S, SE> extends SingleChildStatefulWidget {
   /// {@macro bloc_listener_base}
   const BlocSideEffectListenerBase({
     required this.listener,
@@ -98,12 +98,12 @@ abstract class BlocSideEffectListenerBase<B extends SideEffectProvider<SE>, SE>
   final BlocWidgetSideEffectListener<SE> listener;
 
   @override
-  SingleChildState<BlocSideEffectListenerBase<B, SE>> createState() =>
-      _BlocSideEffectListenerBaseState<B, SE>();
+  SingleChildState<BlocSideEffectListenerBase<B, S, SE>> createState() =>
+      _BlocSideEffectListenerBaseState<B, S, SE>();
 }
 
-class _BlocSideEffectListenerBaseState<B extends SideEffectProvider<SE>, SE>
-    extends SingleChildState<BlocSideEffectListenerBase<B, SE>> {
+class _BlocSideEffectListenerBaseState<B extends SideEffectProvider<SE, S>, S,
+    SE> extends SingleChildState<BlocSideEffectListenerBase<B, S, SE>> {
   StreamSubscription<SE>? _subscription;
   late B _bloc;
 
@@ -115,7 +115,7 @@ class _BlocSideEffectListenerBaseState<B extends SideEffectProvider<SE>, SE>
   }
 
   @override
-  void didUpdateWidget(BlocSideEffectListenerBase<B, SE> oldWidget) {
+  void didUpdateWidget(BlocSideEffectListenerBase<B, S, SE> oldWidget) {
     super.didUpdateWidget(oldWidget);
     final oldBloc = oldWidget.bloc ?? context.read<B>();
     final currentBloc = widget.bloc ?? oldBloc;
