@@ -1,4 +1,5 @@
 import 'package:bloc_side_effect/side_effect_bloc.dart';
+import 'package:bloc_side_effect/src/side_effect_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,7 +28,7 @@ class BlocBuilderWithSideEffects<B extends SideEffectProvider<SE, S>, S, SE>
   Widget build(BuildContext context, S state) {
     return BlocSideEffectListener<B, S, SE>(
       listener: sideEffectsListener,
-      child: this,
+      child: builder(context, state),
     );
   }
 }
