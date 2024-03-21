@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// effects
 class BlocListenerWithSideEffects<B extends SideEffectProvider<SE, S>, S, SE>
     extends StatelessWidget {
-  /// {@macro bloc_builder_with_side_effects}
   const BlocListenerWithSideEffects({
     required this.child,
     required this.listener,
@@ -17,19 +16,14 @@ class BlocListenerWithSideEffects<B extends SideEffectProvider<SE, S>, S, SE>
     Key? key,
   }) : super(key: key);
 
-  ///
   final BlocWidgetSideEffectListener<SE> sideEffectsListener;
 
-  ///
   final BlocWidgetListener<S> listener;
 
-  ///
   final B? bloc;
 
-  ///
   final BlocListenerCondition<S>? listenWhen;
 
-  ///
   final Widget child;
 
   @override
