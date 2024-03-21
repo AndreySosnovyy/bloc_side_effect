@@ -21,7 +21,7 @@ class BlocBuilderWithSideEffects<B extends SideEffectProvider<SE, S>, S, SE>
           builder: builder,
         );
 
-  /// {@macro bloc_widget_side_effect_listener}
+  ///
   final BlocWidgetSideEffectListener<SE> sideEffectsListener;
 
   @override
