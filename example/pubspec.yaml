@@ -10,7 +10,6 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
-  top_snackbar_flutter: ^3.1.0
   flutter_bloc: ^8.1.4
   bloc_side_effect:
     path: ../

@@ -13,9 +13,9 @@ mixin BlocSideEffectListenerSingleChildWidget on SingleChildWidget {}
 
 /// Signature for the `listener` function which takes the `BuildContext` along
 /// with the `side effect`.
-typedef BlocWidgetSideEffectListener<SE> = void Function(
+typedef BlocWidgetSideEffectListener<SideEffect> = void Function(
   BuildContext context,
-  SE sideEffect,
+  SideEffect sideEffect,
 );
 
 /// {@template bloc_side_effect_listener}
@@ -50,12 +50,12 @@ typedef BlocWidgetSideEffectListener<SE> = void Function(
 /// )
 /// ```
 /// {@endtemplate}
-class BlocSideEffectListener<B extends SideEffectProvider<SE, S>, S, SE>
-    extends BlocSideEffectListenerBase<B, S, SE>
+class BlocSideEffectListener<B extends SideEffectProvider<SideEffect, S>, S,
+        SideEffect> extends BlocSideEffectListenerBase<B, S, SideEffect>
     with BlocSideEffectListenerSingleChildWidget {
   /// {@macro bloc_side_effect_listener}
   const BlocSideEffectListener({
-    required BlocWidgetSideEffectListener<SE> listener,
+    required BlocWidgetSideEffectListener<SideEffect> listener,
     B? bloc,
     Widget? child,
     Key? key,
@@ -74,8 +74,10 @@ class BlocSideEffectListener<B extends SideEffectProvider<SE, S>, S, SE>
 /// subscription. The type of the side effect and what happens with each
 /// side effect emit is defined by sub-classes.
 /// {@endtemplate}
-abstract class BlocSideEffectListenerBase<B extends SideEffectProvider<SE, S>,
-    S, SE> extends SingleChildStatefulWidget {
+abstract class BlocSideEffectListenerBase<
+    B extends SideEffectProvider<SideEffect, State>,
+    State,
+    SideEffect> extends SingleChildStatefulWidget {
   /// {@macro bloc_listener_base}
   const BlocSideEffectListenerBase({
     required this.listener,
@@ -95,16 +97,17 @@ abstract class BlocSideEffectListenerBase<B extends SideEffectProvider<SE, S>,
   /// The [BlocWidgetListener] which will be called on every `side effect` emit.
   /// This [listener] should be used for any code which needs to execute
   /// in response to a `side effect` emit.
-  final BlocWidgetSideEffectListener<SE> listener;
+  final BlocWidgetSideEffectListener<SideEffect> listener;
 
   @override
-  SingleChildState<BlocSideEffectListenerBase<B, S, SE>> createState() =>
-      _BlocSideEffectListenerBaseState<B, S, SE>();
+  SingleChildState<BlocSideEffectListenerBase<B, State, SideEffect>>
+      createState() => _BlocSideEffectListenerBaseState<B, State, SideEffect>();
 }
 
-class _BlocSideEffectListenerBaseState<B extends SideEffectProvider<SE, S>, S,
-    SE> extends SingleChildState<BlocSideEffectListenerBase<B, S, SE>> {
-  StreamSubscription<SE>? _subscription;
+class _BlocSideEffectListenerBaseState<
+        B extends SideEffectProvider<SideEffect, S>, S, SideEffect>
+    extends SingleChildState<BlocSideEffectListenerBase<B, S, SideEffect>> {
+  StreamSubscription<SideEffect>? _subscription;
   late B _bloc;
 
   @override
@@ -115,7 +118,7 @@ class _BlocSideEffectListenerBaseState<B extends SideEffectProvider<SE, S>, S,
   }
 
   @override
-  void didUpdateWidget(BlocSideEffectListenerBase<B, S, SE> oldWidget) {
+  void didUpdateWidget(BlocSideEffectListenerBase<B, S, SideEffect> oldWidget) {
     super.didUpdateWidget(oldWidget);
     final oldBloc = oldWidget.bloc ?? context.read<B>();
     final currentBloc = widget.bloc ?? oldBloc;

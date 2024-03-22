@@ -4,38 +4,42 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Extended version of [BlocConsumer] which also allows to listen to mixed side
-/// effects
-class BlocConsumerWithSideEffects<B extends SideEffectProvider<SE, S>, S, SE>
-    extends StatelessWidget {
+/// effects (named `SE` in generics) if provided
+class BlocConsumerWithSideEffects<
+    Bloc extends SideEffectProvider<SideEffect, State>,
+    State,
+    SideEffect> extends StatelessWidget {
   const BlocConsumerWithSideEffects({
     required this.builder,
     required this.listener,
-    required this.sideEffectsListener,
+    this.sideEffectsListener,
     this.buildWhen,
     this.listenWhen,
     this.bloc,
     Key? key,
   }) : super(key: key);
 
-  final BlocWidgetSideEffectListener<SE> sideEffectsListener;
+  final BlocWidgetSideEffectListener<SideEffect>? sideEffectsListener;
 
-  final BlocWidgetBuilder<S> builder;
+  final BlocWidgetBuilder<State> builder;
 
-  final BlocWidgetListener<S> listener;
+  final BlocWidgetListener<State> listener;
 
-  final BlocBuilderCondition<S>? buildWhen;
+  final BlocBuilderCondition<State>? buildWhen;
 
-  final BlocListenerCondition<S>? listenWhen;
+  final BlocListenerCondition<State>? listenWhen;
 
-  final B? bloc;
+  final Bloc? bloc;
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<B, S>(
-      builder: (context, state) => BlocSideEffectListener<B, S, SE>(
-        listener: sideEffectsListener,
-        child: builder(context, state),
-      ),
+    return BlocConsumer<Bloc, State>(
+      builder: (context, state) => sideEffectsListener != null
+          ? BlocSideEffectListener<Bloc, State, SideEffect>(
+              listener: sideEffectsListener!,
+              child: builder(context, state),
+            )
+          : builder(context, state),
       listener: listener,
       bloc: bloc,
       buildWhen: buildWhen,

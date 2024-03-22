@@ -1,9 +1,7 @@
 import 'package:bloc_side_effect/side_effect_bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:bloc_tests/features/home/bloc/home_bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -14,9 +12,8 @@ class HomeView extends StatelessWidget {
       sideEffectsListener: (context, sideEffect) {
         sideEffect.map(
           error: (sideEffect) {
-            showTopSnackBar(
-              Overlay.of(context),
-              CustomSnackBar.error(message: sideEffect.message),
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(sideEffect.message)),
             );
           },
         );

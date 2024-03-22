@@ -9,13 +9,13 @@ import 'package:flutter/widgets.dart';
 /// {@template bloc_side_effect_mixin}
 /// Mixin to enrich the existing bloc  with `Stream` of `Side effects`
 /// {@endtemplate}
-mixin BlocSideEffectMixin<E, S, SE> on Bloc<E, S>
-    implements SideEffectProvider<SE, S> {
-  final StreamController<SE> _sideEffectController =
+mixin BlocSideEffectMixin<Event, State, SideEffect> on Bloc<Event, State>
+    implements SideEffectProvider<SideEffect, State> {
+  final StreamController<SideEffect> _sideEffectController =
       StreamController.broadcast();
 
   /// Emits a new [sideEffect].
-  void emitSideEffect(SE sideEffect) {
+  void emitSideEffect(SideEffect sideEffect) {
     try {
       if (_sideEffectController.isClosed) {
         throw StateError('Cannot emit new states after calling close');
@@ -28,7 +28,7 @@ mixin BlocSideEffectMixin<E, S, SE> on Bloc<E, S>
   }
 
   @override
-  Stream<SE> get sideEffects => _sideEffectController.stream;
+  Stream<SideEffect> get sideEffects => _sideEffectController.stream;
 
   @mustCallSuper
   @override
