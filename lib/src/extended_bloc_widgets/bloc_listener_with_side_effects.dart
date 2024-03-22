@@ -3,12 +3,15 @@ import 'package:bloc_side_effect/src/side_effect_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Extended version of [BlocListener] which also allows to listen to mixed side
-/// effects (named `SE` in generics) if provided
+/// {@template bloc_listener_with_side_effects}
+/// Extended version of [BlocListener] which also allows listening to the mixed
+/// side effects if provided
+/// {@endtemplate}
 class BlocListenerWithSideEffects<
     Bloc extends SideEffectProvider<SideEffect, State>,
     State,
     SideEffect> extends StatelessWidget {
+  /// {@macro bloc_listener_with_side_effects}
   const BlocListenerWithSideEffects({
     required this.listener,
     this.child,
@@ -18,14 +21,29 @@ class BlocListenerWithSideEffects<
     Key? key,
   }) : super(key: key);
 
+  /// {@macro bloc_widget_side_effect_listener}
   final BlocWidgetSideEffectListener<SideEffect>? sideEffectsListener;
 
+  /// Same as the 'listener' property for BlocListener from flutter_bloc
+  /// package.
+  ///
+  /// See the documentation there if you need.
   final BlocWidgetListener<State> listener;
 
+  /// Same as the 'bloc' property for BlocListener from flutter_bloc package.
+  ///
+  /// See the documentation there if you need.
   final Bloc? bloc;
 
+  /// Same as the 'listenWhen' property for BlocListener from flutter_bloc
+  /// package.
+  ///
+  /// See the documentation there if you need.
   final BlocListenerCondition<State>? listenWhen;
 
+  /// Same as the 'child' property for BlocListener from flutter_bloc package.
+  ///
+  /// See the documentation there if you need.
   final Widget? child;
 
   @override

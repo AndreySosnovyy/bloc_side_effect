@@ -3,12 +3,15 @@ import 'package:bloc_side_effect/src/side_effect_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Extended version of [BlocBuilder] which also allows to listen to mixed side
-/// effects if provided
+/// {@template bloc_builder_with_side_effects}
+/// Extended version of [BlocBuilder] which also allows listening to the mixed
+/// side effects if provided
+/// {@endtemplate}
 class BlocBuilderWithSideEffects<
     Bloc extends SideEffectProvider<SideEffect, State>,
     State,
     SideEffect> extends BlocBuilder<Bloc, State> {
+  /// {@macro bloc_builder_with_side_effects}
   const BlocBuilderWithSideEffects({
     required BlocWidgetBuilder<State> builder,
     this.sideEffectsListener,
@@ -22,6 +25,7 @@ class BlocBuilderWithSideEffects<
           builder: builder,
         );
 
+  /// {@macro bloc_widget_side_effect_listener}
   final BlocWidgetSideEffectListener<SideEffect>? sideEffectsListener;
 
   @override

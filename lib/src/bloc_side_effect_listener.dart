@@ -94,9 +94,11 @@ abstract class BlocSideEffectListenerBase<
   /// Whenever the [bloc]'s `side effect` emits, [listener] will be invoked.
   final B? bloc;
 
+  /// {@template bloc_widget_side_effect_listener}
   /// The [BlocWidgetListener] which will be called on every `side effect` emit.
   /// This [listener] should be used for any code which needs to execute
   /// in response to a `side effect` emit.
+  /// {@endtemplate}
   final BlocWidgetSideEffectListener<SideEffect> listener;
 
   @override
