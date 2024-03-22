@@ -86,15 +86,19 @@ abstract class BlocSideEffectListenerBase<
     Key? key,
   }) : super(key: key, child: child);
 
+  /// {@template bloc_side_effect_listener_base.child}
   /// The widget which will be rendered as a descendant of the
   /// [BlocSideEffectListenerBase].
+  /// {@endtemplate}
   final Widget? child;
 
+  /// {@template bloc_side_effect_listener_base.bloc}
   /// The [bloc] whose `side effect` will be listened to.
   /// Whenever the [bloc]'s `side effect` emits, [listener] will be invoked.
+  /// {@endtemplate}
   final B? bloc;
 
-  /// {@template bloc_widget_side_effect_listener}
+  /// {@template bloc_side_effect_listener_base.listener}
   /// The [BlocWidgetListener] which will be called on every `side effect` emit.
   /// This [listener] should be used for any code which needs to execute
   /// in response to a `side effect` emit.
