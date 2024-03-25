@@ -1,8 +1,8 @@
-name: bloc_side_effect
-description: Extended bloc with second stream of side effects.
+name: flutter_bloc_side_effect
+description: Extended bloc with second stream of side effects and widgets.
 version: 1.0.0
-repository: https://github.com/AndreySosnovyy/bloc_side_effect
-issue_tracker: https://github.com/AndreySosnovyy/bloc_side_effect/issues
+repository: https://github.com/AndreySosnovyy/flutter_bloc_side_effect
+issue_tracker: https://github.com/AndreySosnovyy/flutter_bloc_side_effect/issues
 
 environment:
   sdk: ">=2.12.0 <3.0.0"  

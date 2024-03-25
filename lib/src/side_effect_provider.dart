@@ -1,4 +1,4 @@
-library bloc_side_effect;
+library flutter_bloc_side_effect;
 
 import 'package:bloc/bloc.dart';
 

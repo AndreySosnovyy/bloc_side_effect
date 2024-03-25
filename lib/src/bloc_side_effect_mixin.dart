@@ -1,12 +1,12 @@
-library bloc_side_effect;
+library flutter_bloc_side_effect;
 
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:bloc_side_effect/src/side_effect_provider.dart';
+import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
 import 'package:flutter/widgets.dart';
 
-/// {@template bloc_side_effect_mixin}
+/// {@template flutter_bloc_side_effect_mixin}
 /// Mixin to enrich the existing bloc  with `Stream` of `Side effects`
 /// {@endtemplate}
 mixin BlocSideEffectMixin<Event, State, SideEffect> on Bloc<Event, State>

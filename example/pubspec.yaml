@@ -1,6 +1,6 @@
-name: bloc_tests
+name: flutter_bloc_side_effect_example
 description: "A new Flutter project."
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
@@ -10,8 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
-  flutter_bloc: ^8.1.4
-  bloc_side_effect:
+  flutter_bloc_side_effect:
     path: ../
   freezed_annotation: ^2.4.1
 

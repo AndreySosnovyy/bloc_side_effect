@@ -1,8 +1,8 @@
-library bloc_side_effect;
+library flutter_bloc_side_effect;
 
 import 'dart:async';
 
-import 'package:bloc_side_effect/src/side_effect_provider.dart';
+import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/single_child_widget.dart';
@@ -18,7 +18,7 @@ typedef BlocWidgetSideEffectListener<SideEffect> = void Function(
   SideEffect sideEffect,
 );
 
-/// {@template bloc_side_effect_listener}
+/// {@template flutter_bloc_side_effect_listener}
 /// Takes a [BlocWidgetSideEffectListener] and an optional [bloc] and invokes
 /// the [listener] in response to `side effect` emits in the [bloc].
 /// It should be used for functionality that needs to occur only in response to
@@ -53,7 +53,7 @@ typedef BlocWidgetSideEffectListener<SideEffect> = void Function(
 class BlocSideEffectListener<B extends SideEffectProvider<SideEffect, S>, S,
         SideEffect> extends BlocSideEffectListenerBase<B, S, SideEffect>
     with BlocSideEffectListenerSingleChildWidget {
-  /// {@macro bloc_side_effect_listener}
+  /// {@macro flutter_bloc_side_effect_listener}
   const BlocSideEffectListener({
     required BlocWidgetSideEffectListener<SideEffect> listener,
     B? bloc,
@@ -67,7 +67,7 @@ class BlocSideEffectListener<B extends SideEffectProvider<SideEffect, S>, S,
         );
 }
 
-/// {@template bloc_side_effect_listener_base}
+/// {@template flutter_bloc_side_effect_listener_base}
 /// Base for widgets that listen to side effect emits in a specified [bloc].
 ///
 /// A [BlocSideEffectListenerBase] is stateful and maintains the side effect
@@ -86,19 +86,19 @@ abstract class BlocSideEffectListenerBase<
     Key? key,
   }) : super(key: key, child: child);
 
-  /// {@template bloc_side_effect_listener_base.child}
+  /// {@template flutter_bloc_side_effect_listener_base.child}
   /// The widget which will be rendered as a descendant of the
   /// [BlocSideEffectListenerBase].
   /// {@endtemplate}
   final Widget? child;
 
-  /// {@template bloc_side_effect_listener_base.bloc}
+  /// {@template flutter_bloc_side_effect_listener_base.bloc}
   /// The [bloc] whose `side effect` will be listened to.
   /// Whenever the [bloc]'s `side effect` emits, [listener] will be invoked.
   /// {@endtemplate}
   final B? bloc;
 
-  /// {@template bloc_side_effect_listener_base.listener}
+  /// {@template flutter_bloc_side_effect_listener_base.listener}
   /// The [BlocWidgetListener] which will be called on every `side effect` emit.
   /// This [listener] should be used for any code which needs to execute
   /// in response to a `side effect` emit.

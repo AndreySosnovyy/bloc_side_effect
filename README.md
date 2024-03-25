@@ -1,4 +1,4 @@
-<a href="https://pub.dev/packages/bloc_side_effect"><img src="https://img.shields.io/pub/v/bloc_side_effect.svg" alt="Pub"></a>
+<a href="https://pub.dev/packages/flutter_bloc_side_effect"><img src="https://img.shields.io/pub/v/flutter_bloc_side_effect.svg" alt="Pub"></a>
 
 
 Extended [bloc](https://pub.dev/packages/bloc) with a separate stream for events that should be consumed only once. 

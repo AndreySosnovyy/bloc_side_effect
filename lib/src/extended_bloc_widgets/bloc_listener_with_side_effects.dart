@@ -1,7 +1,7 @@
-import 'package:bloc_side_effect/side_effect_bloc.dart';
-import 'package:bloc_side_effect/src/side_effect_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc_side_effect/src/bloc_side_effect_listener.dart';
+import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
 
 /// {@template bloc_listener_with_side_effects}
 /// Extended version of [BlocListener] which also allows listening to the mixed
@@ -30,7 +30,7 @@ class BlocListenerWithSideEffects<
   /// See the documentation there if you need.
   final BlocWidgetListener<State> listener;
 
-  /// {@macro bloc_side_effect_listener_base.bloc}
+  /// {@macro flutter_bloc_side_effect_listener_base.bloc}
   /// Same as the 'bloc' property for BlocListener from flutter_bloc package.
   ///
   /// See the documentation there if you need.
@@ -42,7 +42,7 @@ class BlocListenerWithSideEffects<
   /// See the documentation there if you need.
   final BlocListenerCondition<State>? listenWhen;
 
-  /// {@macro bloc_side_effect_listener_base.child}
+  /// {@macro flutter_bloc_side_effect_listener_base.child}
   final Widget? child;
 
   @override

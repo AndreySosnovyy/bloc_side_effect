@@ -1,7 +1,7 @@
-library bloc_side_effect;
+library flutter_bloc_side_effect;
 
-import 'package:bloc_side_effect/src/bloc_side_effect_listener.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc_side_effect/src/bloc_side_effect_listener.dart';
 import 'package:provider/provider.dart';
 
 /// {@template multi_bloc_listener}
