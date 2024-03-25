@@ -1,11 +1,23 @@
-<a href="https://pub.dev/packages/flutter_bloc_side_effect"><img src="https://img.shields.io/pub/v/flutter_bloc_side_effect.svg" alt="Pub"></a>
+Reworked [flutter_bloc](https://pub.dev/packages/flutter_bloc) package.
 
+## Motivation
 
-Extended [bloc](https://pub.dev/packages/bloc) with a separate stream for events that should be consumed only once. 
+It contains most core features from original package and a new one which is Side Effects.
 
-A separate thread allows you to separate events related to navigation a toast/snackbar message, for example, from the state of the bloc.
+Side Effects feature is inspired by [side_effect_bloc](https://pub.dev/packages/side_effect_bloc)
+but also with some new utility widgets based on default flutter_bloc's ones. These can be used
+like a full alternative but with Side Effects if provided. Here is the list of them: 
+- BlocBuilder → BlocBuilderWithSideEffects 
+- BlocListener → BlocListenerWithSideEffects 
+- BlocConsumer → BlocConsumerWithSideEffects.
 
-## Usage
+Please take attention that some of the original classes are not presented in this package!
+These are:
+- DI-related (BlocProvider, MultiBlocProvider, RepositoryProvider, MultiRepositoryProvider)
+- Cubit
+- Other (MultiBlocListener, BlocSelector).
+
+## Usage of Side Effect (TODO)
 
 ### Adding mixin
 

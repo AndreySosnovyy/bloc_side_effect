@@ -9,22 +9,14 @@ void main() {
   runApp(const App());
 }
 
+final bloc = MyBloc();
+
 class App extends StatelessWidget {
   const App({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const MyView(),
-      builder: (context, child) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider<MyBloc>(create: (_) => MyBloc()),
-          ],
-          child: (child ?? const SizedBox()),
-        );
-      },
-    );
+    return const MaterialApp(home: MyView());
   }
 }
 
@@ -34,6 +26,7 @@ class MyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumerWithSideEffects<MyBloc, MyState, MySideEffect>(
+      bloc: bloc,
       sideEffectsListener: (context, sideEffect) {
         sideEffect.map(
           error: (sideEffect) {

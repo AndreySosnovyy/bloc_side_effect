@@ -1,5 +1,1 @@
-# example
-
-A new Flutter project.
-
-## Getting Started
+# Example for flutter_bloc_side_effect package 

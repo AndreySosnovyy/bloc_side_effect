@@ -10,46 +10,49 @@ import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
 class BlocBuilderWithSideEffects<
     Bloc extends SideEffectProvider<SideEffect, State>,
     State,
-    SideEffect> extends BlocBuilder<Bloc, State> {
+    SideEffect> extends StatelessWidget {
   /// {@macro bloc_builder_with_side_effects}
   const BlocBuilderWithSideEffects({
-    /// Same as the 'builder' property for BlocListener from flutter_bloc
-    /// package.
-    ///
-    /// See the documentation there if you need.
-    required BlocWidgetBuilder<State> builder,
+    required this.builder,
+    required this.bloc,
     this.sideEffectsListener,
-
-    /// Same as the 'buildWhen' property for BlocListener from flutter_bloc
-    /// package.
-    ///
-    /// See the documentation there if you need.
-    BlocBuilderCondition<State>? buildWhen,
-
-    /// {@macro flutter_bloc_side_effect_listener_base.bloc}
-    /// Same as the 'bloc' property for BlocListener from flutter_bloc package.
-    ///
-    /// See the documentation there if you need.
-    Bloc? bloc,
+    this.buildWhen,
     Key? key,
-  }) : super(
-          key: key,
-          bloc: bloc,
-          buildWhen: buildWhen,
-          builder: builder,
-        );
+  }) : super(key: key);
 
   /// {@macro flutter_bloc_side_effect_listener_base.listener}
   final BlocWidgetSideEffectListener<SideEffect>? sideEffectsListener;
 
+  /// Same as the 'builder' property for BlocListener from flutter_bloc
+  /// package.
+  ///
+  /// See the documentation there if you need.
+  final BlocWidgetBuilder<State> builder;
+
+  /// Same as the 'buildWhen' property for BlocListener from flutter_bloc
+  /// package.
+  ///
+  /// See the documentation there if you need.
+  final BlocBuilderCondition<State>? buildWhen;
+
+  /// {@macro flutter_bloc_side_effect_listener_base.bloc}
+  /// Same as the 'bloc' property for BlocListener from flutter_bloc package.
+  ///
+  /// See the documentation there if you need.
+  final Bloc bloc;
+
   @override
-  Widget build(BuildContext context, State state) {
-    return sideEffectsListener != null
-        ? BlocSideEffectListener<Bloc, State, SideEffect>(
-            bloc: bloc,
-            listener: sideEffectsListener!,
-            child: builder(context, state),
-          )
-        : builder(context, state);
+  Widget build(BuildContext context) {
+    return BlocBuilder<Bloc, State>(
+      buildWhen: buildWhen,
+      bloc: bloc,
+      builder: (context, state) => sideEffectsListener != null
+          ? BlocSideEffectListener<Bloc, State, SideEffect>(
+              bloc: bloc,
+              listener: sideEffectsListener!,
+              child: builder(context, state),
+            )
+          : builder(context, state),
+    );
   }
 }

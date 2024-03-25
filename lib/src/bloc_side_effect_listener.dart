@@ -56,7 +56,7 @@ class BlocSideEffectListener<B extends SideEffectProvider<SideEffect, S>, S,
   /// {@macro flutter_bloc_side_effect_listener}
   const BlocSideEffectListener({
     required BlocWidgetSideEffectListener<SideEffect> listener,
-    B? bloc,
+    required B bloc,
     Widget? child,
     Key? key,
   }) : super(

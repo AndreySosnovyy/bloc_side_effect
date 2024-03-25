@@ -14,10 +14,10 @@ class BlocListenerWithSideEffects<
   /// {@macro bloc_listener_with_side_effects}
   const BlocListenerWithSideEffects({
     required this.listener,
+    required this.bloc,
     this.child,
     this.sideEffectsListener,
     this.listenWhen,
-    this.bloc,
     Key? key,
   }) : super(key: key);
 
@@ -34,7 +34,7 @@ class BlocListenerWithSideEffects<
   /// Same as the 'bloc' property for BlocListener from flutter_bloc package.
   ///
   /// See the documentation there if you need.
-  final Bloc? bloc;
+  final Bloc bloc;
 
   /// Same as the 'listenWhen' property for BlocListener from flutter_bloc
   /// package.

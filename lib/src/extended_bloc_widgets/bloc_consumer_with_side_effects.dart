@@ -15,10 +15,10 @@ class BlocConsumerWithSideEffects<
   const BlocConsumerWithSideEffects({
     required this.builder,
     required this.listener,
+    required this.bloc,
     this.sideEffectsListener,
     this.buildWhen,
     this.listenWhen,
-    this.bloc,
     Key? key,
   }) : super(key: key);
 
@@ -52,13 +52,14 @@ class BlocConsumerWithSideEffects<
   /// Same as the 'bloc' property for BlocListener from flutter_bloc package.
   ///
   /// See the documentation there if you need.
-  final Bloc? bloc;
+  final Bloc bloc;
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<Bloc, State>(
       builder: (context, state) => sideEffectsListener != null
           ? BlocSideEffectListener<Bloc, State, SideEffect>(
+        bloc: bloc,
               listener: sideEffectsListener!,
               child: builder(context, state),
             )
