@@ -2,9 +2,9 @@ library flutter_bloc_side_effect;
 
 import 'dart:async';
 
-import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 /// Mixin which allows `MultiBlocSideEffectListener` to infer the types
@@ -81,7 +81,7 @@ abstract class BlocSideEffectListenerBase<
   /// {@macro bloc_listener_base}
   const BlocSideEffectListenerBase({
     required this.listener,
-    this.bloc,
+    required this.bloc,
     this.child,
     Key? key,
   }) : super(key: key, child: child);
@@ -96,7 +96,7 @@ abstract class BlocSideEffectListenerBase<
   /// The [bloc] whose `side effect` will be listened to.
   /// Whenever the [bloc]'s `side effect` emits, [listener] will be invoked.
   /// {@endtemplate}
-  final B? bloc;
+  final B bloc;
 
   /// {@template flutter_bloc_side_effect_listener_base.listener}
   /// The [BlocWidgetListener] which will be called on every `side effect` emit.
@@ -119,19 +119,17 @@ class _BlocSideEffectListenerBaseState<
   @override
   void initState() {
     super.initState();
-    _bloc = widget.bloc ?? context.read<B>();
+    _bloc = widget.bloc;
     _subscribe();
   }
 
   @override
   void didUpdateWidget(BlocSideEffectListenerBase<B, S, SideEffect> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final oldBloc = oldWidget.bloc ?? context.read<B>();
-    final currentBloc = widget.bloc ?? oldBloc;
-    if (oldBloc != currentBloc) {
+    if (oldWidget.bloc != widget.bloc) {
       if (_subscription != null) {
         _unsubscribe();
-        _bloc = currentBloc;
+        _bloc = widget.bloc;
       }
       _subscribe();
     }
@@ -140,11 +138,10 @@ class _BlocSideEffectListenerBaseState<
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final bloc = widget.bloc ?? context.read<B>();
-    if (_bloc != bloc) {
+    if (_bloc != widget.bloc) {
       if (_subscription != null) {
         _unsubscribe();
-        _bloc = bloc;
+        _bloc = widget.bloc;
       }
       _subscribe();
     }
@@ -156,11 +153,6 @@ class _BlocSideEffectListenerBaseState<
       child != null,
       '''${widget.runtimeType} used outside of MultiBlocListener must specify a child''',
     );
-    if (widget.bloc == null) {
-      // Trigger a rebuild if the bloc reference has changed.
-      // See https://github.com/felangel/bloc/issues/2127.
-      context.select<B, bool>((bloc) => identical(_bloc, bloc));
-    }
     return child!;
   }
 

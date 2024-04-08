@@ -24,6 +24,7 @@ class MyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return BlocConsumerWithSideEffects<MyBloc, MyState, MySideEffect>(
       bloc: bloc,
       sideEffectsListener: (context, sideEffect) {

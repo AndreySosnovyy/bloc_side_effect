@@ -1,6 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages
 import 'package:flutter_bloc_side_effect/side_effect_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'my_bloc.freezed.dart';
