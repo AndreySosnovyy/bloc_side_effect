@@ -59,7 +59,7 @@ class BlocConsumerWithSideEffects<
     return BlocConsumer<Bloc, State>(
       builder: (context, state) => sideEffectsListener != null
           ? BlocSideEffectListener<Bloc, State, SideEffect>(
-        bloc: bloc,
+              bloc: bloc,
               listener: sideEffectsListener!,
               child: builder(context, state),
             )

@@ -1,15 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_side_effect/side_effect_bloc.dart';
 import 'package:flutter_bloc_side_effect_example/my_bloc.dart';
 
 void main() {
   runApp(const App());
 }
-
-final bloc = MyBloc();
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -19,6 +16,8 @@ class App extends StatelessWidget {
     return const MaterialApp(home: MyView());
   }
 }
+
+final bloc = MyBloc();
 
 class MyView extends StatelessWidget {
   const MyView({super.key});
@@ -38,7 +37,6 @@ class MyView extends StatelessWidget {
       },
       listener: (_, state) => log(state.stateName),
       builder: (context, state) {
-        final bloc = context.read<MyBloc>();
         return Scaffold(
           appBar: AppBar(title: Text(state.stateName)),
           floatingActionButton: Row(

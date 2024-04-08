@@ -2,9 +2,9 @@ Reworked [flutter_bloc](https://pub.dev/packages/flutter_bloc) package.
 
 ## Motivation
 
-It contains most core features from original package and a new one which is Side Effects.
+It contains most core Mys from original package and a new one which is Side Effects.
 
-Side Effects feature is inspired by [side_effect_bloc](https://pub.dev/packages/side_effect_bloc)
+Side Effects My is inspired by [side_effect_bloc](https://pub.dev/packages/side_effect_bloc)
 but also with some new utility widgets based on default flutter_bloc's ones. These can be used
 like a full alternative but with Side Effects if provided. Here is the list of them: 
 - BlocBuilder → BlocBuilderWithSideEffects 
@@ -17,45 +17,54 @@ These are:
 - Cubit
 - Other (MultiBlocListener, BlocSelector).
 
-## Usage of Side Effect (TODO)
+## Usage of Side Effect
 
-### Adding mixin
+### Mixin
+
+To start using Side Effects add the mixin to your normal bloc:
 
 ```dart
-class FeatureBloc extends Bloc<FeatureEvent, FeatureState>
-    with SideEffectBlocMixin<FeatureEvent, FeatureState, FeatureSideEffect> {
-  FeatureBloc() : super(FeatureState.initial());
+class MyBloc extends Bloc<MyEvent, MyState>
+    with SideEffectBlocMixin<MyEvent, MyState, MySideEffect> {
+  MyBloc() : super(MyState.initial());
 }
 ```
 
 ### Emit side effect
 
-```dart
-class FeatureBloc extends SideEffectBloc<FeatureEvent, FeatureState, FeatureSideEffect>{
-  FeatureBloc() : super(FeatureState.initial()){        
-    on<ItemClick>(
-      (event, emit) {
-        emitSideEffect(FeatureSideEffect.openItem(event.id));
-      },
-    );
-  }
-}
-```
+To emit a side effect use `emitSideEffect` method in your handlers.
 
 ### Listen side effect
 
+You can use any of 3 available widgets for listening side effects:
+- BlocConsumerWithSideEffects
+- BlocListenerWithSideEffects
+- BlocBuilderWithSideEffects
+
 ```dart
-BlocSideEffectListener<FeatureBloc, FeatureSideEffect>(
-    listener: (BuildContext context, FeatureSideEffect sideEffect) {
-        sideEffect.when(
-            goToNext: () => Navigator.of(context).pushNamed("/sub"),
-            openSnackbar: () {
-                const snackBar = SnackBar(
-                    content: Text('Yay! A SnackBar!'),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            });
+BlocConsumerWithSideEffects<MyBloc, MyState, MySideEffect>(
+    bloc: myBlocInstance,
+    sideEffectsListener: (context, sideEffect) {
+      // Handle side effect
     },
-    child: ViewBody(),
+    listener: (context, state) {
+      // Normal states listener   
+    },
+    builder: (context, state) {
+      // Normal builder
+      return MyView();
+    }
 )
 ```
+
+### Bloc widgets for bloc without side effects
+
+If you don't have side effects for bloc, but still need to listen its state
+changes in UI, just abandon it by placing `dynamic` type instead of Side Effect
+class type like so:
+```dart
+BlocConsumerWithSideEffects<MyBloc, MyState, dymanic>(...)
+```
+
+and don't provide `sideEffectsListener` as it is an optional parameter for all
+bloc widgets!
