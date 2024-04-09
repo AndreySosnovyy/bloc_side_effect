@@ -58,7 +58,7 @@ class BlocConsumer<Bloc extends fb.StateStreamable<State>, State>
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<Bloc, State>(
+    return fb.BlocConsumer<Bloc, State>(
       builder: builder,
       listener: listener,
       bloc: bloc,
