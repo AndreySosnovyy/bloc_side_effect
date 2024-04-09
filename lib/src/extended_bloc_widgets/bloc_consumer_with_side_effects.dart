@@ -1,10 +1,12 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' hide BlocConsumer;
 import 'package:flutter_bloc_side_effect/src/bloc_side_effect_listener.dart';
+import 'package:flutter_bloc_side_effect/src/reworked_bloc_widgets/bloc_consumer.dart'
+    as rfb;
 import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
 
 /// {@template bloc_consumer_with_side_effects}
-/// Extended version of [BlocConsumer] which also allows listening to the mixed
+/// Extended version of [rfb.BlocConsumer] which also allows listening to the mixed
 /// side effects if provided
 /// {@endtemplate}
 class BlocConsumerWithSideEffects<
@@ -16,54 +18,40 @@ class BlocConsumerWithSideEffects<
     required this.builder,
     required this.listener,
     required this.bloc,
-    this.sideEffectsListener,
+    required this.sideEffectsListener,
     this.buildWhen,
     this.listenWhen,
     Key? key,
   }) : super(key: key);
 
-  /// {@macro bloc_widget_side_effect_listener}
-  final BlocWidgetSideEffectListener<SideEffect>? sideEffectsListener;
+  /// {@macro flutter_bloc_side_effect_listener_base.listener}
+  final BlocWidgetSideEffectListener<SideEffect> sideEffectsListener;
 
-  /// Same as the 'builder' property for BlocListener from flutter_bloc package.
-  ///
-  /// See the documentation there if you need.
+  /// {@macro bloc_consumer.builder}
   final BlocWidgetBuilder<State> builder;
 
-  /// Same as the 'listener' property for BlocListener from flutter_bloc
-  /// package.
-  ///
-  /// See the documentation there if you need.
+  /// {@macro bloc_consumer.listener}
   final BlocWidgetListener<State> listener;
 
-  /// Same as the 'buildWhen' property for BlocListener from flutter_bloc
-  /// package.
-  ///
-  /// See the documentation there if you need.
+  /// {@macro bloc_consumer.buildWhen}
   final BlocBuilderCondition<State>? buildWhen;
 
-  /// Same as the 'listenWhen' property for BlocListener from flutter_bloc
-  /// package.
-  ///
-  /// See the documentation there if you need.
+  /// {@macro bloc_consumer.listenWhen}
   final BlocListenerCondition<State>? listenWhen;
 
-  /// {@macro flutter_bloc_side_effect_listener_base.bloc}
-  /// Same as the 'bloc' property for BlocListener from flutter_bloc package.
-  ///
-  /// See the documentation there if you need.
+  /// {@macro bloc_consumer.bloc}
   final Bloc bloc;
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<Bloc, State>(
-      builder: (context, state) => sideEffectsListener != null
-          ? BlocSideEffectListener<Bloc, State, SideEffect>(
-              bloc: bloc,
-              listener: sideEffectsListener!,
-              child: builder(context, state),
-            )
-          : builder(context, state),
+    return rfb.BlocConsumer<Bloc, State>(
+      builder: (context, state) {
+        return BlocSideEffectListener<Bloc, State, SideEffect>(
+          bloc: bloc,
+          listener: sideEffectsListener,
+          child: builder(context, state),
+        );
+      },
       listener: listener,
       bloc: bloc,
       buildWhen: buildWhen,

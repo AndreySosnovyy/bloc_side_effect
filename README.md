@@ -2,17 +2,35 @@ Reworked [flutter_bloc](https://pub.dev/packages/flutter_bloc) package.
 
 ## Motivation
 
-It contains most core Mys from original package and a new one which is Side Effects.
+This package is here to solve some problems that you may face during developing
+mobile apps using BLoC architecture. What kind of problems:
+1) Putting a mess of parameters in your state classes just to react to them in UI.
+Now you can get rid of it in favor of using separate stream of side effects.
+2) Emitting states just because you need to show a toast or make any small action
+in UI even if your business logic doesn't imply this emits.
+3)  A necessity to emit two different states in a row just to perform something
+in UI because current implementation of flutter_bloc intentionally doesn't
+listen if states are of the same type in sequence.
 
-Side Effects My is inspired by [side_effect_bloc](https://pub.dev/packages/side_effect_bloc)
-but also with some new utility widgets based on default flutter_bloc's ones. These can be used
-like a full alternative but with Side Effects if provided. Here is the list of them: 
-- BlocBuilder → BlocBuilderWithSideEffects 
-- BlocListener → BlocListenerWithSideEffects 
+Side Effects feature is inspired by [side_effect_bloc](https://pub.dev/packages/side_effect_bloc)
+but also with some new utility widgets based on original flutter_bloc's ones. Use
+them as usual but provide a handler for side effects. Here is the list of these widgets:
+
+- BlocBuilder → BlocBuilderWithSideEffects
+- BlocListener → BlocListenerWithSideEffects
 - BlocConsumer → BlocConsumerWithSideEffects.
+
+If you don't need the side effect feature for specific bloc just use original widgets
+in UI. But now you must provide a `bloc` parameter as it is required. This is the
+only difference. These widgets are:
+
+- BLocBuilder
+- BlocListener
+- BlocCustomer.
 
 Please take attention that some of the original classes are not presented in this package!
 These are:
+
 - DI-related (BlocProvider, MultiBlocProvider, RepositoryProvider, MultiRepositoryProvider)
 - Cubit
 - Other (MultiBlocListener, BlocSelector).
@@ -22,7 +40,6 @@ These are:
 ### Mixin
 
 To start using Side Effects add the mixin to your normal bloc:
-
 ```dart
 class MyBloc extends Bloc<MyEvent, MyState>
     with SideEffectBlocMixin<MyEvent, MyState, MySideEffect> {
@@ -33,38 +50,36 @@ class MyBloc extends Bloc<MyEvent, MyState>
 ### Emit side effect
 
 To emit a side effect use `emitSideEffect` method in your handlers.
+```dart
+class MyBloc extends Bloc<MyEvent, MyState>
+    with SideEffectBlocMixin<MyEvent, MyState, MySideEffect> {
+  MyBloc() : super(MyState.initial());
+}
+```
 
-### Listen side effect
+### Handling side effects
 
-You can use any of 3 available widgets for listening side effects:
+You can use any of 3 available widgets for handling side effects:
+
 - BlocConsumerWithSideEffects
 - BlocListenerWithSideEffects
 - BlocBuilderWithSideEffects
 
 ```dart
-BlocConsumerWithSideEffects<MyBloc, MyState, MySideEffect>(
-    bloc: myBlocInstance,
-    sideEffectsListener: (context, sideEffect) {
-      // Handle side effect
-    },
-    listener: (context, state) {
-      // Normal states listener   
-    },
-    builder: (context, state) {
-      // Normal builder
-      return MyView();
-    }
-)
+@override
+Widget build(BuildContext context) {
+  return BlocConsumerWithSideEffects<MyBloc, MyState, MySideEffect>(
+      bloc: myBlocInstance,
+      sideEffectsListener: (context, sideEffect) {
+        // Handle side effect
+      },
+      listener: (context, state) {
+        // Normal states listener   
+      },
+      builder: (context, state) {
+        // Normal builder
+        return MyView();
+      }
+  );
+}
 ```
-
-### Bloc widgets for bloc without side effects
-
-If you don't have side effects for bloc, but still need to listen its state
-changes in UI, just abandon it by placing `dynamic` type instead of Side Effect
-class type like so:
-```dart
-BlocConsumerWithSideEffects<MyBloc, MyState, dymanic>(...)
-```
-
-and don't provide `sideEffectsListener` as it is an optional parameter for all
-bloc widgets!
