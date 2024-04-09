@@ -3,7 +3,7 @@ Reworked [flutter_bloc](https://pub.dev/packages/flutter_bloc) package.
 ## Motivation
 
 This package is here to solve some problems that you may face during developing
-mobile apps using BLoC architecture. What kind of problems:
+mobile apps using BLoC state management. What kind of problems:
 1) Putting a mess of parameters in your state classes just to react to them in UI.
 Now you can get rid of it in favor of using separate stream of side effects.
 2) Emitting states just because you need to show a toast or make any small action
@@ -14,7 +14,7 @@ listen if states are of the same type in sequence.
 
 Side Effects feature is inspired by [side_effect_bloc](https://pub.dev/packages/side_effect_bloc)
 but also with some new utility widgets based on original flutter_bloc's ones. Use
-them as usual but provide a handler for side effects. Here is the list of these widgets:
+them as usual ones but provide a handler for side effects. Here is the list of these widgets:
 
 - BlocBuilder → BlocBuilderWithSideEffects
 - BlocListener → BlocListenerWithSideEffects
@@ -49,21 +49,31 @@ class MyBloc extends Bloc<MyEvent, MyState>
 
 ### Emit side effect
 
-To emit a side effect use `emitSideEffect` method in your handlers.
+If you added the mixin to your bloc, the new method will be available.
+To emit a side effect use `emitSideEffect` in your handlers.
 ```dart
-class MyBloc extends Bloc<MyEvent, MyState>
-    with SideEffectBlocMixin<MyEvent, MyState, MySideEffect> {
-  MyBloc() : super(MyState.initial());
+Future<void> _throwError(
+  AuthenticateMyEvent event,
+  Emitter<MyState> emitter,
+) async {
+  try {
+    await repository.authenticate();    
+  } on Object catch (e) {
+    emitter(const MyState.error(message: e.toString()));
+    emitSideEffect(const MySideEffect.error(message: 'My toast error message'));  
+  }
 }
 ```
 
 ### Handling side effects
 
-You can use any of 3 available widgets for handling side effects:
+You can use any of available widgets for handling side effects in UI:
 
 - BlocConsumerWithSideEffects
 - BlocListenerWithSideEffects
 - BlocBuilderWithSideEffects
+- BlocSideEffectListener
+- MultiBlocSideEffectListener
 
 ```dart
 @override
