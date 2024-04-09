@@ -73,7 +73,6 @@ You can use any of available widgets for handling side effects in UI:
 - BlocListenerWithSideEffects
 - BlocBuilderWithSideEffects
 - BlocSideEffectListener
-- MultiBlocSideEffectListener
 
 ```dart
 @override
