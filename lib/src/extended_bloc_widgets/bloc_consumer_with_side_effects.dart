@@ -6,8 +6,8 @@ import 'package:flutter_bloc_side_effect/src/reworked_bloc_widgets/bloc_consumer
 import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
 
 /// {@template bloc_consumer_with_side_effects}
-/// Extended version of [rfb.BlocConsumer] which also allows listening to the mixed
-/// side effects if provided
+/// Extended version of [rfb.BlocConsumer] which also allows listening to the
+/// mixed side effects if provided
 /// {@endtemplate}
 class BlocConsumerWithSideEffects<
     Bloc extends SideEffectProvider<SideEffect, State>,
