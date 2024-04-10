@@ -42,7 +42,7 @@ These are:
 To start using Side Effects add the mixin to your normal bloc:
 ```dart
 class MyBloc extends Bloc<MyEvent, MyState>
-    with SideEffectBlocMixin<MyEvent, MyState, MySideEffect> {
+    with BlocSideEffectMixin<MyEvent, MyState, MySideEffect> {
   MyBloc() : super(MyState.initial());
 }
 ```
