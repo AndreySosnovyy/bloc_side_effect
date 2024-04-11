@@ -1,3 +1,5 @@
+library flutter_bloc_side_effect;
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide BlocListener;
 import 'package:flutter_bloc_side_effect/src/bloc_side_effect_listener.dart';

@@ -1,3 +1,5 @@
+library flutter_bloc_side_effect;
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' as fb;
 

@@ -2,8 +2,8 @@ library flutter_bloc_side_effect;
 
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
 
 /// {@template flutter_bloc_side_effect_mixin}

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc_side_effect/side_effect_bloc.dart';
+import 'package:flutter_bloc_side_effect/flutter_bloc_side_effect.dart';
 import 'package:flutter_bloc_side_effect_example/my_bloc.dart';
 
 void main() {

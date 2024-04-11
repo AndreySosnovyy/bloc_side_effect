@@ -5,11 +5,6 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
-import 'package:provider/single_child_widget.dart';
-
-/// Mixin which allows `MultiBlocSideEffectListener` to infer the types
-/// of multiple [BlocWidgetSideEffectListener]s.
-mixin BlocSideEffectListenerSingleChildWidget on SingleChildWidget {}
 
 /// Signature for the `listener` function which takes the `BuildContext` along
 /// with the `side effect`.
@@ -51,8 +46,7 @@ typedef BlocWidgetSideEffectListener<SideEffect> = void Function(
 /// ```
 /// {@endtemplate}
 class BlocSideEffectListener<B extends SideEffectProvider<SideEffect, S>, S,
-        SideEffect> extends BlocSideEffectListenerBase<B, S, SideEffect>
-    with BlocSideEffectListenerSingleChildWidget {
+    SideEffect> extends BlocSideEffectListenerBase<B, S, SideEffect> {
   /// {@macro flutter_bloc_side_effect_listener}
   const BlocSideEffectListener({
     required BlocWidgetSideEffectListener<SideEffect> listener,
@@ -75,16 +69,16 @@ class BlocSideEffectListener<B extends SideEffectProvider<SideEffect, S>, S,
 /// side effect emit is defined by sub-classes.
 /// {@endtemplate}
 abstract class BlocSideEffectListenerBase<
-    B extends SideEffectProvider<SideEffect, State>,
-    State,
-    SideEffect> extends SingleChildStatefulWidget {
+    B extends SideEffectProvider<SideEffect, State_>,
+    State_,
+    SideEffect> extends StatefulWidget {
   /// {@macro bloc_listener_base}
   const BlocSideEffectListenerBase({
     required this.listener,
     required this.bloc,
     this.child,
     Key? key,
-  }) : super(key: key, child: child);
+  }) : super(key: key);
 
   /// {@template flutter_bloc_side_effect_listener_base.child}
   /// The widget which will be rendered as a descendant of the
@@ -106,13 +100,14 @@ abstract class BlocSideEffectListenerBase<
   final BlocWidgetSideEffectListener<SideEffect> listener;
 
   @override
-  SingleChildState<BlocSideEffectListenerBase<B, State, SideEffect>>
-      createState() => _BlocSideEffectListenerBaseState<B, State, SideEffect>();
+  State<BlocSideEffectListenerBase<B, State_, SideEffect>> createState() =>
+      _BlocSideEffectListenerBaseState<B, State_, SideEffect>();
 }
 
 class _BlocSideEffectListenerBaseState<
-        B extends SideEffectProvider<SideEffect, S>, S, SideEffect>
-    extends SingleChildState<BlocSideEffectListenerBase<B, S, SideEffect>> {
+    B extends SideEffectProvider<SideEffect, S>,
+    S,
+    SideEffect> extends State<BlocSideEffectListenerBase<B, S, SideEffect>> {
   StreamSubscription<SideEffect>? _subscription;
   late B _bloc;
 
@@ -148,15 +143,6 @@ class _BlocSideEffectListenerBaseState<
   }
 
   @override
-  Widget buildWithChild(BuildContext context, Widget? child) {
-    assert(
-      child != null,
-      '''${widget.runtimeType} used outside of MultiBlocListener must specify a child''',
-    );
-    return child!;
-  }
-
-  @override
   void dispose() {
     _unsubscribe();
     super.dispose();
@@ -170,5 +156,10 @@ class _BlocSideEffectListenerBaseState<
   void _unsubscribe() {
     _subscription?.cancel();
     _subscription = null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child ?? const SizedBox.shrink();
   }
 }
