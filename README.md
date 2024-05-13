@@ -26,7 +26,7 @@ only difference. These widgets are:
 
 - BLocBuilder
 - BlocListener
-- BlocCustomer.
+- BlocConsumer.
 
 Please take attention that some of the original classes are not presented in this package!
 These are:
