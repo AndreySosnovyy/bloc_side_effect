@@ -2,14 +2,14 @@ library flutter_bloc_side_effect;
 
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
 
 /// {@template flutter_bloc_side_effect_mixin}
 /// Mixin to enrich the existing bloc with `Stream` of `Side effects`
 /// {@endtemplate}
-mixin BlocSideEffectMixin<Event, S, SE> on Bloc<Event, S>
+mixin BlocSideEffectMixin<E, S, SE> on Bloc<E, S>
     implements SideEffectProvider<S, SE> {
   final StreamController<SE> _sideEffectController =
       StreamController.broadcast();

@@ -21,3 +21,4 @@ export 'src/extended_bloc_widgets/bloc_listener_with_side_effects.dart';
 export 'src/reworked_bloc_widgets/bloc_builder.dart';
 export 'src/reworked_bloc_widgets/bloc_consumer.dart';
 export 'src/reworked_bloc_widgets/bloc_listener.dart';
+export 'src/side_effect_provider.dart';

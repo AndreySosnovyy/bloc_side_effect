@@ -1,5 +1,8 @@
 Reworked [flutter_bloc](https://pub.dev/packages/flutter_bloc) package.
 
+[![pub](https://img.shields.io/pub/v/flutter_bloc_side_effect.svg?style=flat&colorB=blue&label=flutter_bloc_side_effect)](https://pub.dev/packages/flutter_bloc_side_effect)
+[![github stars](https://img.shields.io/github/stars/AndreySosnovyy/bloc_side_effect.svg?&style=flat&logo=github&color=red&label=stars)](https://github.com/AndreySosnovyy/bloc_side_effect)
+
 ## Installation
 
 Add to your `pubspec.yaml`:

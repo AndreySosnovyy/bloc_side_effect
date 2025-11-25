@@ -1,6 +1,6 @@
 name: flutter_bloc_side_effect
 description: Extended BLoC with second stream of Side Effects and widgets.
-version: 0.0.2
+version: 1.0.0
 homepage: https://github.com/AndreySosnovyy/bloc_side_effect
 repository: https://github.com/AndreySosnovyy/bloc_side_effect
 issue_tracker: https://github.com/AndreySosnovyy/bloc_side_effect/issues

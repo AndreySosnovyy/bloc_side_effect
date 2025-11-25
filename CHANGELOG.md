@@ -13,12 +13,12 @@
 
 ### Breaking Changes
 * **BREAKING:** `SideEffectProvider` generics order changed from `<SideEffect, State>` to `<S, SE>` for consistency
-* **BREAKING:** `BlocSideEffectMixin` now uses `<Event, S, SE>` (renamed `State` to `S`, `SideEffect` to `SE`)
+* **BREAKING:** `BlocSideEffectMixin` now uses `<E, S, SE>` (renamed `Event` to `E`, `State` to `S`, `SideEffect` to `SE`)
 * **BREAKING:** Removed `BlocSideEffectListenerBase` - merged into `BlocSideEffectListener`
 * **BREAKING:** All widgets now use consistent type parameter naming: `B` for bloc, `S` for state, `SE` for side effect
 
-## 0.0.1
-* Initial release
-
 ## 0.0.2
 * Fix readme (typo)
+
+## 0.0.1
+* Initial release
