@@ -7,9 +7,9 @@ import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
 
 /// Signature for the `listener` function which takes the `BuildContext` along
 /// with the `side effect`.
-typedef BlocWidgetSideEffectListener<SideEffect> = void Function(
+typedef BlocWidgetSideEffectListener<SE> = void Function(
   BuildContext context,
-  SideEffect sideEffect,
+  SE sideEffect,
 );
 
 /// {@template flutter_bloc_side_effect_listener}
@@ -30,70 +30,37 @@ typedef BlocWidgetSideEffectListener<SideEffect> = void Function(
 /// )
 /// ```
 /// {@endtemplate}
-class BlocSideEffectListener<B extends SideEffectProvider<SideEffect, S>, S,
-    SideEffect> extends BlocSideEffectListenerBase<B, S, SideEffect> {
+class BlocSideEffectListener<B extends SideEffectProvider<S, SE>, S, SE>
+    extends StatefulWidget {
   /// {@macro flutter_bloc_side_effect_listener}
   const BlocSideEffectListener({
-    required BlocWidgetSideEffectListener<SideEffect> listener,
-    required B bloc,
-    Widget? child,
-    Key? key,
-  }) : super(
-          key: key,
-          child: child,
-          listener: listener,
-          bloc: bloc,
-        );
-}
-
-/// {@template flutter_bloc_side_effect_listener_base}
-/// Base for widgets that listen to side effect emits in a specified [bloc].
-///
-/// A [BlocSideEffectListenerBase] is stateful and maintains the side effect
-/// subscription. The type of the side effect and what happens with each
-/// side effect emit is defined by sub-classes.
-/// {@endtemplate}
-abstract class BlocSideEffectListenerBase<
-    B extends SideEffectProvider<SideEffect, State_>,
-    State_,
-    SideEffect> extends StatefulWidget {
-  /// {@macro bloc_listener_base}
-  const BlocSideEffectListenerBase({
     required this.listener,
     required this.bloc,
     this.child,
     Key? key,
   }) : super(key: key);
 
-  /// {@template flutter_bloc_side_effect_listener_base.child}
   /// The widget which will be rendered as a descendant of the
-  /// [BlocSideEffectListenerBase].
-  /// {@endtemplate}
+  /// [BlocSideEffectListener].
   final Widget? child;
 
-  /// {@template flutter_bloc_side_effect_listener_base.bloc}
   /// The [bloc] whose `side effect` will be listened to.
   /// Whenever the [bloc]'s `side effect` emits, [listener] will be invoked.
-  /// {@endtemplate}
   final B bloc;
 
-  /// {@template flutter_bloc_side_effect_listener_base.listener}
   /// The [BlocWidgetSideEffectListener] which will be called on every
   /// `side effect` emit. This [listener] should be used for any code which
   /// needs to execute in response to a `side effect` emit.
-  /// {@endtemplate}
-  final BlocWidgetSideEffectListener<SideEffect> listener;
+  final BlocWidgetSideEffectListener<SE> listener;
 
   @override
-  State<BlocSideEffectListenerBase<B, State_, SideEffect>> createState() =>
-      _BlocSideEffectListenerBaseState<B, State_, SideEffect>();
+  State<BlocSideEffectListener<B, S, SE>> createState() =>
+      _BlocSideEffectListenerState<B, S, SE>();
 }
 
-class _BlocSideEffectListenerBaseState<
-    B extends SideEffectProvider<SideEffect, S>,
-    S,
-    SideEffect> extends State<BlocSideEffectListenerBase<B, S, SideEffect>> {
-  StreamSubscription<SideEffect>? _subscription;
+class _BlocSideEffectListenerState<B extends SideEffectProvider<S, SE>, S, SE>
+    extends State<BlocSideEffectListener<B, S, SE>> {
+  StreamSubscription<SE>? _subscription;
   late B _bloc;
 
   @override
@@ -104,7 +71,7 @@ class _BlocSideEffectListenerBaseState<
   }
 
   @override
-  void didUpdateWidget(BlocSideEffectListenerBase<B, S, SideEffect> oldWidget) {
+  void didUpdateWidget(BlocSideEffectListener<B, S, SE> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.bloc != widget.bloc) {
       if (_subscription != null) {

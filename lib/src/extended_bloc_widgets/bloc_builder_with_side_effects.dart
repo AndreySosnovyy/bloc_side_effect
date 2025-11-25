@@ -11,10 +11,8 @@ import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
 /// Extended version of [rfb.BlocBuilder] which also allows listening to the
 /// mixed side effects if provided
 /// {@endtemplate}
-class BlocBuilderWithSideEffects<
-    Bloc extends SideEffectProvider<SideEffect, State>,
-    State,
-    SideEffect> extends StatelessWidget {
+class BlocBuilderWithSideEffects<B extends SideEffectProvider<S, SE>, S, SE>
+    extends StatelessWidget {
   /// {@macro bloc_builder_with_side_effects}
   const BlocBuilderWithSideEffects({
     required this.builder,
@@ -24,24 +22,25 @@ class BlocBuilderWithSideEffects<
     Key? key,
   }) : super(key: key);
 
-  /// {@macro flutter_bloc_side_effect_listener_base.listener}
-  final BlocWidgetSideEffectListener<SideEffect> sideEffectsListener;
+  /// The [BlocWidgetSideEffectListener] which will be called on every
+  /// `side effect` emit.
+  final BlocWidgetSideEffectListener<SE> sideEffectsListener;
 
-  /// {@macro bloc_builder.builder}
-  final BlocWidgetBuilder<State> builder;
+  /// The [BlocWidgetBuilder] which will be called on every state change.
+  final BlocWidgetBuilder<S> builder;
 
-  /// {@macro bloc_builder.buildWhen}
-  final BlocBuilderCondition<State>? buildWhen;
+  /// Optional condition to determine whether to rebuild.
+  final BlocBuilderCondition<S>? buildWhen;
 
-  /// {@macro bloc_builder.bloc}
-  final Bloc bloc;
+  /// The [bloc] whose `state` and `side effect` will be listened to.
+  final B bloc;
 
   @override
   Widget build(BuildContext context) {
-    return BlocSideEffectListener<Bloc, State, SideEffect>(
+    return BlocSideEffectListener<B, S, SE>(
       bloc: bloc,
       listener: sideEffectsListener,
-      child: rfb.BlocBuilder<Bloc, State>(
+      child: rfb.BlocBuilder<B, S>(
         buildWhen: buildWhen,
         bloc: bloc,
         builder: builder,

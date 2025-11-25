@@ -6,7 +6,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_bloc_side_effect: ^TODO: add version
+  flutter_bloc_side_effect: ^1.0.0
 ```
 
 No need to add `bloc` or `flutter_bloc` separately - this package already includes them.

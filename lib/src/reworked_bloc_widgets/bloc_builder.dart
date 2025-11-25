@@ -7,8 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart' as fb;
 /// Reworked version of [fb.BlocBuilder] which gets bloc not from context but
 /// by provided parameter
 /// {@endtemplate}
-class BlocBuilder<Bloc extends fb.StateStreamable<State>, State>
-    extends StatelessWidget {
+class BlocBuilder<B extends fb.StateStreamable<S>, S> extends StatelessWidget {
   /// {@macro bloc_builder}
   const BlocBuilder({
     required this.builder,
@@ -17,33 +16,18 @@ class BlocBuilder<Bloc extends fb.StateStreamable<State>, State>
     Key? key,
   }) : super(key: key);
 
-  /// {@template bloc_builder.builder}
-  /// Same as the 'builder' property for BlocListener from flutter_bloc
-  /// package.
-  ///
-  /// See the documentation there if you need.
-  /// {@endtemplate}
-  final fb.BlocWidgetBuilder<State> builder;
+  /// The [fb.BlocWidgetBuilder] which will be called on every state change.
+  final fb.BlocWidgetBuilder<S> builder;
 
-  /// {@template bloc_builder.buildWhen}
-  /// Same as the 'buildWhen' property for BlocListener from flutter_bloc
-  /// package.
-  ///
-  /// See the documentation there if you need.
-  /// {@endtemplate}
-  final fb.BlocBuilderCondition<State>? buildWhen;
+  /// Optional condition to determine whether to rebuild.
+  final fb.BlocBuilderCondition<S>? buildWhen;
 
-  /// {@template bloc_builder.bloc}
-  /// {@macro flutter_bloc_side_effect_listener_base.bloc}
-  /// Same as the 'bloc' property for BlocListener from flutter_bloc package.
-  ///
-  /// See the documentation there if you need.
-  /// {@endtemplate}
-  final Bloc bloc;
+  /// The [bloc] whose `state` will be used to build the widget.
+  final B bloc;
 
   @override
   Widget build(BuildContext context) {
-    return fb.BlocBuilder<Bloc, State>(
+    return fb.BlocBuilder<B, S>(
       buildWhen: buildWhen,
       bloc: bloc,
       builder: builder,
