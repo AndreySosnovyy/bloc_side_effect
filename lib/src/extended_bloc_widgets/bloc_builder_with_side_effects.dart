@@ -38,16 +38,14 @@ class BlocBuilderWithSideEffects<
 
   @override
   Widget build(BuildContext context) {
-    return rfb.BlocBuilder<Bloc, State>(
-      buildWhen: buildWhen,
+    return BlocSideEffectListener<Bloc, State, SideEffect>(
       bloc: bloc,
-      builder: (context, state) {
-        return BlocSideEffectListener<Bloc, State, SideEffect>(
-          bloc: bloc,
-          listener: sideEffectsListener,
-          child: builder(context, state),
-        );
-      },
+      listener: sideEffectsListener,
+      child: rfb.BlocBuilder<Bloc, State>(
+        buildWhen: buildWhen,
+        bloc: bloc,
+        builder: builder,
+      ),
     );
   }
 }

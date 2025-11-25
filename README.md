@@ -1,5 +1,16 @@
 Reworked [flutter_bloc](https://pub.dev/packages/flutter_bloc) package.
 
+## Installation
+
+Add to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  flutter_bloc_side_effect: ^TODO: add version
+```
+
+No need to add `bloc` or `flutter_bloc` separately - this package already includes them.
+
 ## Motivation
 
 This package is here to solve some problems that you may face during developing
@@ -8,7 +19,7 @@ mobile apps using BLoC state management. What kind of problems:
 Now you can get rid of it in favor of using separate stream of side effects.
 2) Emitting states just because you need to show a toast or make any small action
 in UI even if your business logic doesn't imply this emits.
-3)  A necessity to emit two different states in a row just to perform something
+3) A necessity to emit two different states in a row just to perform something
 in UI because current implementation of flutter_bloc intentionally doesn't
 listen if states are of the same type in sequence.
 
@@ -24,7 +35,7 @@ If you don't need the side effect feature for specific bloc just use original wi
 in UI. But now you must provide a `bloc` parameter as it is required. This is the
 only difference. These widgets are:
 
-- BLocBuilder
+- BlocBuilder
 - BlocListener
 - BlocConsumer.
 

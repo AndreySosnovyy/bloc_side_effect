@@ -1,4 +1,4 @@
-library bloc;
+library flutter_bloc_side_effect;
 
 export 'package:flutter_bloc/flutter_bloc.dart'
     hide

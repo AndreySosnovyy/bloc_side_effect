@@ -3,7 +3,6 @@ library flutter_bloc_side_effect;
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
 
 /// Signature for the `listener` function which takes the `BuildContext` along
@@ -14,30 +13,16 @@ typedef BlocWidgetSideEffectListener<SideEffect> = void Function(
 );
 
 /// {@template flutter_bloc_side_effect_listener}
-/// Takes a [BlocWidgetSideEffectListener] and an optional [bloc] and invokes
+/// Takes a [BlocWidgetSideEffectListener] and a [bloc] and invokes
 /// the [listener] in response to `side effect` emits in the [bloc].
 /// It should be used for functionality that needs to occur only in response to
 /// a `side effect` emit such as navigation, showing a `SnackBar`, showing
 /// a `Dialog`, etc...
 /// The [listener] is guaranteed to only be called once for each `side effect`.
 ///
-/// If the [bloc] parameter is omitted, [BlocListener] will automatically
-/// perform a lookup using [BlocProvider] and the current `BuildContext`.
-///
 /// ```dart
-/// BlocSideEffectListener<BlocA, BlocASideEffect>(
-///   listener: (context, sideEffect) {
-///     // do stuff here based on BlocA's side effect
-///   },
-///   child: Container(),
-/// )
-/// ```
-/// Only specify the [bloc] if you wish to provide a [bloc] that is otherwise
-/// not accessible via [BlocProvider] and the current `BuildContext`.
-///
-/// ```dart
-/// BlocSideEffectListener<BlocA, BlocASideEffect>(
-///   value: blocA,
+/// BlocSideEffectListener<BlocA, BlocAState, BlocASideEffect>(
+///   bloc: blocA,
 ///   listener: (context, sideEffect) {
 ///     // do stuff here based on BlocA's side effect
 ///   },
@@ -93,9 +78,9 @@ abstract class BlocSideEffectListenerBase<
   final B bloc;
 
   /// {@template flutter_bloc_side_effect_listener_base.listener}
-  /// The [BlocWidgetListener] which will be called on every `side effect` emit.
-  /// This [listener] should be used for any code which needs to execute
-  /// in response to a `side effect` emit.
+  /// The [BlocWidgetSideEffectListener] which will be called on every
+  /// `side effect` emit. This [listener] should be used for any code which
+  /// needs to execute in response to a `side effect` emit.
   /// {@endtemplate}
   final BlocWidgetSideEffectListener<SideEffect> listener;
 
@@ -131,26 +116,15 @@ class _BlocSideEffectListenerBaseState<
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_bloc != widget.bloc) {
-      if (_subscription != null) {
-        _unsubscribe();
-        _bloc = widget.bloc;
-      }
-      _subscribe();
-    }
-  }
-
-  @override
   void dispose() {
     _unsubscribe();
     super.dispose();
   }
 
   void _subscribe() {
-    _subscription = _bloc.sideEffects
-        .listen((sideEffect) => widget.listener(context, sideEffect));
+    _subscription = _bloc.sideEffects.listen((sideEffect) {
+      if (mounted) widget.listener(context, sideEffect);
+    });
   }
 
   void _unsubscribe() {

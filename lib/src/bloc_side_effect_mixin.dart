@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
 
 /// {@template flutter_bloc_side_effect_mixin}
-/// Mixin to enrich the existing bloc  with `Stream` of `Side effects`
+/// Mixin to enrich the existing bloc with `Stream` of `Side effects`
 /// {@endtemplate}
 mixin BlocSideEffectMixin<Event, State, SideEffect> on Bloc<Event, State>
     implements SideEffectProvider<SideEffect, State> {
@@ -18,7 +18,7 @@ mixin BlocSideEffectMixin<Event, State, SideEffect> on Bloc<Event, State>
   void emitSideEffect(SideEffect sideEffect) {
     try {
       if (_sideEffectController.isClosed) {
-        throw StateError('Cannot emit new states after calling close');
+        throw StateError('Cannot emit new side effects after calling close');
       }
       _sideEffectController.add(sideEffect);
     } catch (error, stackTrace) {

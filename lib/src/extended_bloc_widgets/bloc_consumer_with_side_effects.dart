@@ -46,18 +46,16 @@ class BlocConsumerWithSideEffects<
 
   @override
   Widget build(BuildContext context) {
-    return rfb.BlocConsumer<Bloc, State>(
-      builder: (context, state) {
-        return BlocSideEffectListener<Bloc, State, SideEffect>(
-          bloc: bloc,
-          listener: sideEffectsListener,
-          child: builder(context, state),
-        );
-      },
-      listener: listener,
+    return BlocSideEffectListener<Bloc, State, SideEffect>(
       bloc: bloc,
-      buildWhen: buildWhen,
-      listenWhen: listenWhen,
+      listener: sideEffectsListener,
+      child: rfb.BlocConsumer<Bloc, State>(
+        builder: builder,
+        listener: listener,
+        bloc: bloc,
+        buildWhen: buildWhen,
+        listenWhen: listenWhen,
+      ),
     );
   }
 }
