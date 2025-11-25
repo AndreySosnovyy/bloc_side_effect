@@ -11,10 +11,8 @@ import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
 /// Extended version of [rfb.BlocConsumer] which also allows listening to the
 /// mixed side effects if provided
 /// {@endtemplate}
-class BlocConsumerWithSideEffects<
-    Bloc extends SideEffectProvider<SideEffect, State>,
-    State,
-    SideEffect> extends StatelessWidget {
+class BlocConsumerWithSideEffects<B extends SideEffectProvider<S, SE>, S, SE>
+    extends StatelessWidget {
   /// {@macro bloc_consumer_with_side_effects}
   const BlocConsumerWithSideEffects({
     required this.builder,
@@ -26,38 +24,37 @@ class BlocConsumerWithSideEffects<
     Key? key,
   }) : super(key: key);
 
-  /// {@macro flutter_bloc_side_effect_listener_base.listener}
-  final BlocWidgetSideEffectListener<SideEffect> sideEffectsListener;
+  /// The [BlocWidgetSideEffectListener] which will be called on every
+  /// `side effect` emit.
+  final BlocWidgetSideEffectListener<SE> sideEffectsListener;
 
-  /// {@macro bloc_consumer.builder}
-  final BlocWidgetBuilder<State> builder;
+  /// The [BlocWidgetBuilder] which will be called on every state change.
+  final BlocWidgetBuilder<S> builder;
 
-  /// {@macro bloc_consumer.listener}
-  final BlocWidgetListener<State> listener;
+  /// The [BlocWidgetListener] which will be called on every state change.
+  final BlocWidgetListener<S> listener;
 
-  /// {@macro bloc_consumer.buildWhen}
-  final BlocBuilderCondition<State>? buildWhen;
+  /// Optional condition to determine whether to rebuild.
+  final BlocBuilderCondition<S>? buildWhen;
 
-  /// {@macro bloc_consumer.listenWhen}
-  final BlocListenerCondition<State>? listenWhen;
+  /// Optional condition to determine whether to call [listener].
+  final BlocListenerCondition<S>? listenWhen;
 
-  /// {@macro bloc_consumer.bloc}
-  final Bloc bloc;
+  /// The [bloc] whose `state` and `side effect` will be listened to.
+  final B bloc;
 
   @override
   Widget build(BuildContext context) {
-    return rfb.BlocConsumer<Bloc, State>(
-      builder: (context, state) {
-        return BlocSideEffectListener<Bloc, State, SideEffect>(
-          bloc: bloc,
-          listener: sideEffectsListener,
-          child: builder(context, state),
-        );
-      },
-      listener: listener,
+    return BlocSideEffectListener<B, S, SE>(
       bloc: bloc,
-      buildWhen: buildWhen,
-      listenWhen: listenWhen,
+      listener: sideEffectsListener,
+      child: rfb.BlocConsumer<B, S>(
+        builder: builder,
+        listener: listener,
+        bloc: bloc,
+        buildWhen: buildWhen,
+        listenWhen: listenWhen,
+      ),
     );
   }
 }

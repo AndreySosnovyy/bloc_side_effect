@@ -11,10 +11,8 @@ import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
 /// Extended version of [rfb.BlocListener] which also allows listening to the
 /// mixed side effects if provided
 /// {@endtemplate}
-class BlocListenerWithSideEffects<
-    Bloc extends SideEffectProvider<SideEffect, State>,
-    State,
-    SideEffect> extends StatelessWidget {
+class BlocListenerWithSideEffects<B extends SideEffectProvider<S, SE>, S, SE>
+    extends StatelessWidget {
   /// {@macro bloc_listener_with_side_effects}
   const BlocListenerWithSideEffects({
     required this.listener,
@@ -25,28 +23,29 @@ class BlocListenerWithSideEffects<
     Key? key,
   }) : super(key: key);
 
-  /// {@macro flutter_bloc_side_effect_listener_base.listener}
-  final BlocWidgetSideEffectListener<SideEffect> sideEffectsListener;
+  /// The [BlocWidgetSideEffectListener] which will be called on every
+  /// `side effect` emit.
+  final BlocWidgetSideEffectListener<SE> sideEffectsListener;
 
-  /// {@macro bloc_listener.listener}
-  final BlocWidgetListener<State> listener;
+  /// The [BlocWidgetListener] which will be called on every state change.
+  final BlocWidgetListener<S> listener;
 
-  /// {@macro bloc_listener.bloc}
-  final Bloc bloc;
+  /// The [bloc] whose `state` and `side effect` will be listened to.
+  final B bloc;
 
-  /// {@macro bloc_listener.listenWhen}
-  final BlocListenerCondition<State>? listenWhen;
+  /// Optional condition to determine whether to call [listener].
+  final BlocListenerCondition<S>? listenWhen;
 
-  /// {@macro bloc_listener.child}
+  /// The widget which will be rendered as a descendant.
   final Widget? child;
 
   @override
   Widget build(BuildContext context) {
-    return rfb.BlocListener<Bloc, State>(
+    return rfb.BlocListener<B, S>(
       listener: listener,
       listenWhen: listenWhen,
       bloc: bloc,
-      child: BlocSideEffectListener<Bloc, State, SideEffect>(
+      child: BlocSideEffectListener<B, S, SE>(
         listener: sideEffectsListener,
         bloc: bloc,
         child: child,

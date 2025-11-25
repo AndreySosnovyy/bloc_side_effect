@@ -2,23 +2,23 @@ library flutter_bloc_side_effect;
 
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_side_effect/src/side_effect_provider.dart';
 
 /// {@template flutter_bloc_side_effect_mixin}
-/// Mixin to enrich the existing bloc  with `Stream` of `Side effects`
+/// Mixin to enrich the existing bloc with `Stream` of `Side effects`
 /// {@endtemplate}
-mixin BlocSideEffectMixin<Event, State, SideEffect> on Bloc<Event, State>
-    implements SideEffectProvider<SideEffect, State> {
-  final StreamController<SideEffect> _sideEffectController =
+mixin BlocSideEffectMixin<E, S, SE> on Bloc<E, S>
+    implements SideEffectProvider<S, SE> {
+  final StreamController<SE> _sideEffectController =
       StreamController.broadcast();
 
   /// Emits a new [sideEffect].
-  void emitSideEffect(SideEffect sideEffect) {
+  void emitSideEffect(SE sideEffect) {
     try {
       if (_sideEffectController.isClosed) {
-        throw StateError('Cannot emit new states after calling close');
+        throw StateError('Cannot emit new side effects after calling close');
       }
       _sideEffectController.add(sideEffect);
     } catch (error, stackTrace) {
@@ -28,7 +28,7 @@ mixin BlocSideEffectMixin<Event, State, SideEffect> on Bloc<Event, State>
   }
 
   @override
-  Stream<SideEffect> get sideEffects => _sideEffectController.stream;
+  Stream<SE> get sideEffects => _sideEffectController.stream;
 
   @mustCallSuper
   @override

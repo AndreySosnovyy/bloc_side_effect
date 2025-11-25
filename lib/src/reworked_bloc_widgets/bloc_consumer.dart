@@ -7,8 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart' as fb;
 /// Reworked version of [fb.BlocConsumer] which gets bloc not from context but
 /// by provided parameter
 /// {@endtemplate}
-class BlocConsumer<Bloc extends fb.StateStreamable<State>, State>
-    extends StatelessWidget {
+class BlocConsumer<B extends fb.StateStreamable<S>, S> extends StatelessWidget {
   /// {@macro bloc_consumer}
   const BlocConsumer({
     required this.builder,
@@ -19,48 +18,24 @@ class BlocConsumer<Bloc extends fb.StateStreamable<State>, State>
     Key? key,
   }) : super(key: key);
 
-  /// {@template bloc_consumer.builder}
-  /// Same as the 'builder' property for BlocListener from flutter_bloc package.
-  ///
-  /// See the documentation there if you need.
-  /// {@endtemplate}
-  final fb.BlocWidgetBuilder<State> builder;
+  /// The [fb.BlocWidgetBuilder] which will be called on every state change.
+  final fb.BlocWidgetBuilder<S> builder;
 
-  /// {@template bloc_consumer.listener}
-  /// Same as the 'listener' property for BlocListener from flutter_bloc
-  /// package.
-  ///
-  /// See the documentation there if you need.
-  /// {@endtemplate}
-  final fb.BlocWidgetListener<State> listener;
+  /// The [fb.BlocWidgetListener] which will be called on every state change.
+  final fb.BlocWidgetListener<S> listener;
 
-  /// {@template bloc_consumer.buildWhen}
-  /// Same as the 'buildWhen' property for BlocListener from flutter_bloc
-  /// package.
-  ///
-  /// See the documentation there if you need.
-  /// {@endtemplate}
-  final fb.BlocBuilderCondition<State>? buildWhen;
+  /// Optional condition to determine whether to rebuild.
+  final fb.BlocBuilderCondition<S>? buildWhen;
 
-  /// {@template bloc_consumer.listenWhen}
-  /// Same as the 'listenWhen' property for BlocListener from flutter_bloc
-  /// package.
-  ///
-  /// See the documentation there if you need.
-  /// {@endtemplate}
-  final fb.BlocListenerCondition<State>? listenWhen;
+  /// Optional condition to determine whether to call [listener].
+  final fb.BlocListenerCondition<S>? listenWhen;
 
-  /// {@template bloc_consumer.bloc}
-  /// {@macro flutter_bloc_side_effect_listener_base.bloc}
-  /// Same as the 'bloc' property for BlocListener from flutter_bloc package.
-  ///
-  /// See the documentation there if you need.
-  /// {@endtemplate}
-  final Bloc bloc;
+  /// The [bloc] whose `state` will be used.
+  final B bloc;
 
   @override
   Widget build(BuildContext context) {
-    return fb.BlocConsumer<Bloc, State>(
+    return fb.BlocConsumer<B, S>(
       builder: builder,
       listener: listener,
       bloc: bloc,

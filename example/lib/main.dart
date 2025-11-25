@@ -17,15 +17,26 @@ class App extends StatelessWidget {
   }
 }
 
-final myBloc = MyBloc();
-
-class MyView extends StatelessWidget {
+class MyView extends StatefulWidget {
   const MyView({super.key});
+
+  @override
+  State<MyView> createState() => _MyViewState();
+}
+
+class _MyViewState extends State<MyView> {
+  final _bloc = MyBloc();
+
+  @override
+  void dispose() {
+    _bloc.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumerWithSideEffects<MyBloc, MyState, MySideEffect>(
-      bloc: myBloc,
+      bloc: _bloc,
       sideEffectsListener: (context, sideEffect) {
         sideEffect.map(
           error: (sideEffect) {
@@ -43,7 +54,7 @@ class MyView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               FloatingActionButton(
-                onPressed: () => myBloc.add(const MyEvent.throwError()),
+                onPressed: () => _bloc.add(const MyEvent.throwError()),
                 child: const Text('Error'),
               ),
             ],
